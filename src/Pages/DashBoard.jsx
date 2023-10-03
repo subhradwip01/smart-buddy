@@ -1,8 +1,11 @@
 import React from 'react'
+import BaseLayout from '../Layout/BaseLayout'
 
 const DashBoard = () => {
   return (
-    <div>DashBoard</div>
+    <BaseLayout>
+      Hhhe
+    </BaseLayout>
   )
 }
 

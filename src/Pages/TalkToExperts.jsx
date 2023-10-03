@@ -1,8 +1,10 @@
 import React from 'react'
+import BaseLayout from '../Layout/BaseLayout'
 
 const TalkToExperts = () => {
   return (
-    <div>TalkToExperts</div>
+    <BaseLayout>
+    </BaseLayout>
   )
 }
 
