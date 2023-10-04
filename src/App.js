@@ -7,6 +7,7 @@ import TalkToExperts from './Pages/TalkToExperts';
 import Exams from './Pages/Exams';
 import Statistics from './Pages/Stats';
 import History from './Pages/History';
+import ExpertChat from './Pages/ExpertChat';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path='/exam' element={<Exams/>}/>
       <Route path="/stats/:examId" element={<Statistics/>}/>
       <Route path="/history" element={<History/>}/>
+      <Route path="/expertChat/:fileId" element={<ExpertChat/>}/>
     </Routes> 
     </div>
   );

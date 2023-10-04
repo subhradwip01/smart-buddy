@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { Icons } from '../UI/Icons';
+import {Avatar} from '../UI/Avatar';
 export const Navbar = () => {
     const navabrItem = [
         {
@@ -30,8 +31,7 @@ export const Navbar = () => {
           {navabrItem.map(item=>(
             <p>{item.name}</p>
           ))}
-          <button className='text-white bg-black text-center rounded-full h-[25px] w-[25px] pt-[0.5px]'>S</button>
-
+          <Avatar name="S"/>
         </div>
     </nav>
   )
