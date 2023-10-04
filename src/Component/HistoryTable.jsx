@@ -29,7 +29,7 @@ import {
               <TableCell>{exam.type}</TableCell>
               <TableCell className="text-right">{exam.marksEarned}</TableCell>
               <TableCell className="text-right">{exam.totalMarks}</TableCell>
-              <TableCell className="text-right"><Link to={`/stats/${exam.id}`} className={buttonVariants('outline')}>Open</Link></TableCell>
+              <TableCell className="text-right"><Link to={`/stats/${exam.id}`} className={buttonVariants({variant:'outline'})}>Open</Link></TableCell>
             </TableRow>
           ))}
         </TableBody>
