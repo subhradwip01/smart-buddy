@@ -8,6 +8,8 @@ import Exams from './Pages/Exams';
 import Statistics from './Pages/Stats';
 import History from './Pages/History';
 import ExpertChat from './Pages/ExpertChat';
+import MCQExam from './Pages/MCQExam';
+import OpenEndedExam from './Pages/OpenEndedExam';
 
 function App() {
   return (
@@ -21,6 +23,9 @@ function App() {
       <Route path="/stats/:examId" element={<Statistics/>}/>
       <Route path="/history" element={<History/>}/>
       <Route path="/expertChat/:fileId" element={<ExpertChat/>}/>
+      
+      <Route path='/exam/mcq/:examId' element={<MCQExam/>}/>
+      <Route path='/exam/openEnd/:examId' element={<OpenEndedExam/>}/>
     </Routes> 
     </div>
   );
