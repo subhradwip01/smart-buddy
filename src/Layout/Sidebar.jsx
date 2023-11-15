@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Icons } from '../UI/Icons'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContextProvider';
 
 export const Sidebar = () => {
    const [isHover,setIsHover] = useState(false);
    const location = useLocation();
+   const authCtx = useContext(AuthContext);
+   const navigate = useNavigate();
   const menuItem = [
     {
         name:"Dashboard",
@@ -22,6 +25,11 @@ export const Sidebar = () => {
         IconComp:Icons.brain
     }
   ]
+  const logout = () =>{
+    authCtx.logout();
+    navigate("/");
+
+  }
   return (
     <aside className='flex flex-col px-3 gap-3 py-3 border border-r-[1px] border-r-slate h-screen justify-between '>
         <div className='space-y-2'>
@@ -32,7 +40,7 @@ export const Sidebar = () => {
             </Link>
         ))}
         </div>
-        <button className='px-2 py-3 border border-[#FF3333] border-[2px] text-[#FF3333] mb-12 rounded-md'>Logout</button>
+        <button className='px-2 py-3 border border-[#FF3333] border-[2px] text-[#FF3333] mb-12 rounded-md' onClick={logout}>Logout</button>
     </aside>
   )
 }

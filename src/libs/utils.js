@@ -21,3 +21,4 @@ export function formatTimeDelta(seconds) {
   }
   return parts.join(" ");
 }
+

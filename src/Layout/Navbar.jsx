@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { Icons } from '../UI/Icons';
 import {Avatar} from '../UI/Avatar';
+import { AuthContext } from '../context/AuthContextProvider';
 export const Navbar = () => {
+    const authContext = useContext(AuthContext);
+    console.log();
     const navabrItem = [
         {
           name: 'Contact us',
@@ -31,7 +34,7 @@ export const Navbar = () => {
           {navabrItem.map(item=>(
             <p>{item.name}</p>
           ))}
-          <Avatar name="S"/>
+          <Avatar name={authContext.user.user.name.slice(0,1)}/>
         </div>
     </nav>
   )

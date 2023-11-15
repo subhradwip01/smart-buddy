@@ -17,34 +17,36 @@ export const OpenEnded = ({ exam }) => {
     const [blankAnswer, setBlankAnswer] = React.useState("");
     const [averagePercentage, setAveragePercentage] = React.useState(0);
     const currentQuestion = React.useMemo(() => {
-      return exam.questions[questionIndex];
+      // return exam.questions[questionIndex];
+      return []
     }, [questionIndex, exam.questions]);
 
-    const { mutate: endGame } = useMutation({
-      mutationFn: async () => {
-        const payload = {
-          examId: exam.id,
-        };
-        const response = await axios.post(`/api/endGame`, payload);
-        return response.data;
-      },
-    });
+    // const { mutate: endGame } = useMutation({
+    //   mutationFn: async () => {
+    //     const payload = {
+    //       examId: exam.id,
+    //     };
+    //     const response = await axios.post(`/api/endGame`, payload);
+    //     return response.data;
+    //   },
+    // });
     const [now, setNow] = React.useState(new Date());
-    const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
-      mutationFn: async () => {
-        let filledAnswer = blankAnswer;
-        document.querySelectorAll("#user-blank-input").forEach((input) => {
-          filledAnswer = filledAnswer.replace("_____", input.value);
-          input.value = "";
-        });
-        const payload= {
-          questionId: currentQuestion.id,
-          userInput: filledAnswer,
-        };
-        const response = await axios.post(`/api/checkAnswer`, payload);
-        return response.data;
-      },
-    });
+    const isChecking = false
+    // const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
+    //   mutationFn: async () => {
+    //     let filledAnswer = blankAnswer;
+    //     document.querySelectorAll("#user-blank-input").forEach((input) => {
+    //       filledAnswer = filledAnswer.replace("_____", input.value);
+    //       input.value = "";
+    //     });
+    //     const payload= {
+    //       questionId: currentQuestion.id,
+    //       userInput: filledAnswer,
+    //     };
+    //     const response = await axios.post(`/api/checkAnswer`, payload);
+    //     return response.data;
+    //   },
+    // });
     React.useEffect(() => {
       if (!hasEnded) {
         const interval = setInterval(() => {
@@ -53,27 +55,28 @@ export const OpenEnded = ({ exam }) => {
         return () => clearInterval(interval);
       }
     }, [hasEnded]);
-  
-    const handleNext = React.useCallback(() => {
-      checkAnswer(undefined, {
-        onSuccess: ({ percentageSimilar }) => {
-          toast.success(`Your answer is ${percentageSimilar}% similar to the correct answer`,);
-          setAveragePercentage((prev) => {
-            return (prev + percentageSimilar) / (questionIndex + 1);
-          });
-          if (questionIndex === exam.questions.length - 1) {
-            endGame();
-            setHasEnded(true);
-            return;
-          }
-          setQuestionIndex((prev) => prev + 1);
-        },
-        onError: (error) => {
-          console.error(error);
-          toast.error("Something went wron");
-        },
-      });
-    }, [checkAnswer, questionIndex, toast, endGame, exam.questions.length]);
+    const handleNext = {}
+    const endGame = {}
+    // const handleNext = React.useCallback(() => {
+    //   checkAnswer(undefined, {
+    //     onSuccess: ({ percentageSimilar }) => {
+    //       toast.success(`Your answer is ${percentageSimilar}% similar to the correct answer`,);
+    //       setAveragePercentage((prev) => {
+    //         return (prev + percentageSimilar) / (questionIndex + 1);
+    //       });
+    //       if (questionIndex === exam.questions.length - 1) {
+    //         endGame();
+    //         setHasEnded(true);
+    //         return;
+    //       }
+    //       setQuestionIndex((prev) => prev + 1);
+    //     },
+    //     onError: (error) => {
+    //       console.error(error);
+    //       toast.error("Something went wron");
+    //     },
+    //   });
+    // }, [checkAnswer, questionIndex, toast, endGame, exam.questions.length]);
     React.useEffect(() => {
       const handleKeyDown = (event) => {
         const key = event.key;
@@ -115,7 +118,7 @@ export const OpenEnded = ({ exam }) => {
             <p>
               <span className="text-slate-400">Topic</span> &nbsp;
               <span className="px-2 py-1 text-white rounded-lg bg-slate-800">
-                {exam.topic}
+                {exam?.topic}
               </span>
             </p>
             <div className="flex self-start mt-3 text-slate-400">
@@ -130,7 +133,7 @@ export const OpenEnded = ({ exam }) => {
             <CardTitle className="mr-5 text-center divide-y divide-zinc-600/50">
               <div>{questionIndex + 1}</div>
               <div className="text-base text-slate-400">
-                {exam.questions.length}
+                {exam?.questions?.length}
               </div>
             </CardTitle>
             <CardDescription className="flex-grow text-lg">
@@ -141,7 +144,7 @@ export const OpenEnded = ({ exam }) => {
         <div className="flex flex-col items-center justify-center w-full mt-4">
           <BankAnsInput
             setBlankAnswer={setBlankAnswer}
-            answer={currentQuestion.answer}
+            answer={currentQuestion.answer ?? ""}
           />
           <Button
             variant="outline"

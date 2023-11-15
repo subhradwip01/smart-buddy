@@ -11,23 +11,12 @@ const ExpertChat = () => {
   const [isLoading,setIsLoading] = useState(false);
   const [chatData, setChatData] = useState([
     {
-      message: "What is the purpose of the DOC?",
-      sender: "USER"
-    }, {
-      message: "This DOC is all about thermodynamic",
-      sender: "Tutuor"
-    },
-    {
-      message: "This DOC is all about thermodynamic",
+      message: "What is thermodynamics obased on the DOC?",
       sender: "USER"
     },
     {
-      message: "This DOC is all about thermodynamic",
-      sender: "Tutuor"
-    },
-    {
-      message: "This DOC is all about thermodynamic",
-      sender: "USER"
+      message:"Thermodynamics is the study of the relations between heat, work, temperature, and energy. The laws of thermodynamics describe how the energy in a system changes and whether the system can perform useful work on its surroundings.",
+      sender:"Expert"
     }
   ])
 

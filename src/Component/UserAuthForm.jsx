@@ -1,4 +1,4 @@
-import * as React from "react"
+import React,{useState,useContext} from "react"
 
 import { cn } from "../libs/utils"
 import { Icons } from "../UI/Icons"
@@ -6,19 +6,48 @@ import { Button } from "../UI/Button"
 import { Input } from "../UI/Input"
 import { Label } from "../UI/Label"
 
-
-
+import { AuthContext } from "../context/AuthContextProvider"
+import { signin,signup } from "../api-service/user-service"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 export function UserAuthForm({ className, ...props }) {
-  console.log(props)
-  const [isLoading, setIsLoading] = React.useState(false)
-
+  const [userValue,setUserValue] = useState({
+    username:"",
+    password:"",
+    email:"",
+  })
+  const [isLoading, setIsLoading] = useState(false)
+  const authContext = useContext(AuthContext)
+  const naviagate = useNavigate();
+  const onInput = (e) =>{
+    setUserValue((prevData)=>({
+      ...prevData,
+      [e.target.id]:e.target.value
+    }))
+  }
   async function onSubmit(event) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    event.preventDefault();
+    setIsLoading(true);
+    try{
+      let res;
+      if(props.isSignUp){
+        res = await signup(userValue);
+      }else{
+        res = await signin(userValue);
+      }
+      console.log(res);
+      authContext.setLoggedInUser(res.data.data)
+      // setAuthHeader(res)
+      console.log(res.data.data);
+      toast.success(`Succesfully! ${props.isSignUp ? "Signed up":"Logged In"}`)
+      naviagate("/")
+    }catch(e){
+      // console.log(e.response.data.message)
+      toast.error(e.response.data.message);
+    }finally{
+      setIsLoading(false);
+    }
+    
   }
 
   return (
@@ -37,6 +66,7 @@ export function UserAuthForm({ className, ...props }) {
               autoComplete="name"
               autoCorrect="off"
               disabled={isLoading}
+              onChange={onInput}
             />
           </div>}
           <div className="grid gap-1">
@@ -51,6 +81,7 @@ export function UserAuthForm({ className, ...props }) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              onChange={onInput}
             />
           </div>
           <div className="grid gap-1">
@@ -65,6 +96,7 @@ export function UserAuthForm({ className, ...props }) {
               autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
+              onChange={onInput}
             />
           </div>
 
@@ -86,14 +118,14 @@ export function UserAuthForm({ className, ...props }) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      {/* <Button variant="outline" type="button" disabled={isLoading}>
         {isLoading ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.google className="mr-2 h-4 w-4" />
         )}{" "}
         Google
-      </Button>
+      </Button> */}
     </div>
   )
 }
