@@ -15,9 +15,12 @@ import { LoadingQuestions } from "./LoadingQuestions"
 import { Textarea } from "../UI/textarea"
 import { DialogOverlay, DialogPortal } from "@radix-ui/react-dialog"
 import { createExam } from "../api-service/exam-service"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 export function QuizConfig({type}) {
   const [isLoading,setIsLoading] = useState(false); 
+  const navigate = useNavigate();
   const [examConfig,setExamConfig] = useState({
     topic:"",
     noOfQuestions:1,
@@ -28,19 +31,24 @@ export function QuizConfig({type}) {
     // e.preventDefault();
     setIsLoading(true);
     try{
-    if(type==='MCQ '){
+    if(type==='MCQ'){
       // MCQ generate
       console.log(examConfig);
       const res = await createExam(examConfig);
       console.log(res);
+      toast.success('Great! Exam is ready to start');
+      navigate(`/exam/mcq/${res.data.exam}`)
     }else{
       // Open Ended
       console.log(examConfig);
       const res = await createExam(examConfig)
       console.log(res);
+      toast.success('Great! Exam is ready to start');
+      navigate(`/exam/openEnd/${res.data.exam}`)
     }
   }catch(e){
     console.log(e);
+    toast.error('Oops! Unbale to Create the Exam. Please try Again')
   }finally{
     setIsLoading(false);
   }

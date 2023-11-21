@@ -13,8 +13,9 @@ import { BarChart, ChevronRight, Loader2, Timer } from "lucide-react";
 import { cn, formatTimeDelta } from "../../libs/utils";
 import {MCQCounter} from "./MCQCounter";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
+import { endExam } from "../../api-service/exam-service";
+import { checkQuestion } from "../../api-service/question-service";
 
 const MCQ = ({ exam }) => {
   const [questionIndex, setQuestionIndex] = React.useState(0);
@@ -25,10 +26,9 @@ const MCQ = ({ exam }) => {
   });
   const [selectedChoice, setSelectedChoice] = React.useState(0);
   const [now, setNow] = React.useState(new Date());
-
+  
   const currentQuestion = React.useMemo(() => {
-    // return exam?.questions[questionIndex];
-    return {}
+    return exam?.questions[questionIndex];
   }, [questionIndex, exam.questions]);
 
   const options = React.useMemo(() => {
@@ -36,29 +36,29 @@ const MCQ = ({ exam }) => {
     if (!currentQuestion.options) return [];
     return JSON.parse(currentQuestion.options);
   }, [currentQuestion]);
-const checkAnswer =() =>{}
-const isChecking = false;
-const endGame = () => {}
-//   const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
-//     mutationFn: async () => {
-//       const payload = {
-//         questionId: currentQuestion.id,
-//         userInput: options[selectedChoice],
-//       };
-//       const response = await axios.post(`/api/checkAnswer`, payload);
-//       return response.data;
-//     },
-//   });
 
-//   const { mutate: endGame } = useMutation({
-//     mutationFn: async () => {
-//       const payload = {
-//         examId: exam.id,
-//       };
-//       const response = await axios.post(`/api/endGame`, payload);
-//       return response.data;
-//     },
-//   });
+  const { mutate: checkAnswer, isLoading: isChecking } = useMutation({
+    mutationFn: async () => {
+      
+      const payload= {
+        questionId: currentQuestion._id,
+        userAnser: options[selectedChoice],
+      };
+      const response = await checkQuestion(payload);
+      return response.data;
+    },
+  });
+
+  const { mutate: endGame } = useMutation({
+    mutationFn: async () => {
+      const payload = {
+        examId: exam._id,
+        earnedMarks:5*exam.questions.length
+      };
+      const response = await endExam(payload);
+      return response.data;
+    },
+  });
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -70,29 +70,29 @@ const endGame = () => {}
   }, [hasEnded]);
 
   const handleNext = React.useCallback(() => {
-    // checkAnswer(undefined, {
-    //   onSuccess: ({ isCorrect }) => {
-    //     if (isCorrect) {
-    //       setStats((stats) => ({
-    //         ...stats,
-    //         correct_answers: stats.correct_answers + 1,
-    //       }));
-    //       toast("Correct");
-    //     } else {
-    //       setStats((stats) => ({
-    //         ...stats,
-    //         wrong_answers: stats.wrong_answers + 1,
-    //       }));
-    //       toast("Incorrect");
-    //     }
-    //     if (questionIndex === exam.questions.length - 1) {
-    //       endGame();
-    //       setHasEnded(true);
-    //       return;
-    //     }
-    //     setQuestionIndex((questionIndex) => questionIndex + 1);
-    //   },
-    // });
+    checkAnswer(undefined, {
+      onSuccess: ({ isCorrect }) => {
+        if (isCorrect) {
+          setStats((stats) => ({
+            ...stats,
+            correct_answers: stats.correct_answers + 1,
+          }));
+          toast("Correct");
+        } else {
+          setStats((stats) => ({
+            ...stats,
+            wrong_answers: stats.wrong_answers + 1,
+          }));
+          toast("Incorrect");
+        }
+        if (questionIndex === exam.questions.length - 1) {
+          endGame();
+          setHasEnded(true);
+          return;
+        }
+        setQuestionIndex((questionIndex) => questionIndex + 1);
+      },
+    });
   }, [checkAnswer, questionIndex, exam?.questions?.length, toast, endGame]);
 
   React.useEffect(() => {
@@ -124,10 +124,10 @@ const endGame = () => {}
       <div className="absolute flex flex-col justify-center -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
         <div className="px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
           You Completed in{" "}
-          {formatTimeDelta(differenceInSeconds(now, exam.timeStarted))}
+          {formatTimeDelta(differenceInSeconds(now, new Date(exam.examStarted).getTime()))}
         </div>
         <Link
-          to={`/stat/${exam.id}`}
+          to={`/stat/${exam._id}`}
           className={cn(buttonVariants({ size: "lg" }), "mt-2")}
         >
           View Statistics
@@ -139,7 +139,6 @@ const endGame = () => {}
 
   return (
     <React.Fragment>
-    <Toaster/>
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
       <div className="flex flex-row justify-between">
         <div className="flex flex-col">
@@ -152,7 +151,7 @@ const endGame = () => {}
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, exam.timeStarted))}
+            {formatTimeDelta(differenceInSeconds(now, new Date(exam.examStarted).getTime()))}
           </div>
         </div>
         <MCQCounter
