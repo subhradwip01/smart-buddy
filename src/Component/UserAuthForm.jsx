@@ -43,7 +43,7 @@ export function UserAuthForm({ className, ...props }) {
       naviagate("/")
     }catch(e){
       // console.log(e.response.data.message)
-      toast.error(e.response.data.message);
+      toast.error(`Unable to ${props.isSignUp ? "Signed up":"Logged In"}`);
     }finally{
       setIsLoading(false);
     }

@@ -14,19 +14,37 @@ import { Label } from "../UI/Label"
 import { LoadingQuestions } from "./LoadingQuestions"
 import { Textarea } from "../UI/textarea"
 import { DialogOverlay, DialogPortal } from "@radix-ui/react-dialog"
+import { createExam } from "../api-service/exam-service"
 
 export function QuizConfig({type}) {
   const [isLoading,setIsLoading] = useState(false); 
-  const onSubmit = () =>{
+  const [examConfig,setExamConfig] = useState({
+    topic:"",
+    noOfQuestions:1,
+    type:type,
+  })
+  console.log(type);
+  const onSubmit = async (e) =>{
+    // e.preventDefault();
     setIsLoading(true);
+    try{
     if(type==='MCQ '){
       // MCQ generate
+      console.log(examConfig);
+      const res = await createExam(examConfig);
+      console.log(res);
     }else{
       // Open Ended
+      console.log(examConfig);
+      const res = await createExam(examConfig)
+      console.log(res);
     }
-    setTimeout(()=>{
-      setIsLoading(false);
-    },[3000])
+  }catch(e){
+    console.log(e);
+  }finally{
+    setIsLoading(false);
+  }
+    
   }
 
   return (
@@ -42,13 +60,27 @@ export function QuizConfig({type}) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-2">
-          
-          <div className="grid gap-1">
+        <div className="grid gap-1">
             <Label htmlFor="topic">
+              Choose A Topic
+            </Label>
+            <Input
+              id="topic"
+              placeholder="eg. Phycics Class 11"
+              type="text"
+              autoCapitalize="none"
+              value={examConfig.topic}
+              onChange={(e)=>setExamConfig(prev=>({...prev,[e.target.id]:e.target.value}))}
+            />
+          </div>
+          
+          {/* <div className="grid gap-1">
+            <Label htmlFor="prompt">
               Write Promp for your topic
             </Label>
             <Textarea
-              id="topic"
+              id="prompt"
+              value={examConfig.prompt}
               placeholder="Questions from CBSE Physics, medium level, class 11"
               type="text"
               autoCapitalize="none"
@@ -56,15 +88,15 @@ export function QuizConfig({type}) {
               autoCorrect="off"
               className="resize-none"
               disabled={isLoading}
+              onChange={(e)=>setExamConfig(prev=>({...prev,[e.target.id]:e.target.value}))}
             />
-          </div>
-       
+          </div> */}
           <div className="grid gap-1">
             <Label htmlFor="number-of-questions">
-              Choos Number Of Questions
+              Choose Number Of Questions
             </Label>
             <Input
-              id="number-of-questions"
+              id="noOfQuestions"
               placeholder="eg. 5"
               type="number"
               autoCapitalize="none"
@@ -73,6 +105,8 @@ export function QuizConfig({type}) {
               disabled={isLoading}
               min={10}
               max={20}
+              value={examConfig.noOfQuestions}
+              onChange={(e)=>setExamConfig(prev=>({...prev,[e.target.id]:e.target.value}))}
             />
           </div>
           </div>
