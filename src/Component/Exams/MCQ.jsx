@@ -53,7 +53,7 @@ const MCQ = ({ exam }) => {
     mutationFn: async () => {
       const payload = {
         examId: exam._id,
-        earnedMarks:5*exam.questions.length
+        earnedMarks:5*stats.correct_answers
       };
       const response = await endExam(payload);
       return response.data;
