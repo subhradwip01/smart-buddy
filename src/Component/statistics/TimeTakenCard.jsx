@@ -7,7 +7,7 @@ import { differenceInSeconds } from "date-fns";
 
 const TimeTakenCard = ({ timeEnded, timeStarted }) => {
   return (
-    <Card className="md:col-span-4">
+    <Card className="md:col-span-6">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="text-2xl font-bold">Time Taken</CardTitle>
         <Hourglass />

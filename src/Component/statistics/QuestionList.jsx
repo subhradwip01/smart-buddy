@@ -14,6 +14,7 @@ import {
 
 const QuestionsList = ({ questions }) => {
   return (
+    <React.Fragment>
     <Table className="mt-4">
       <TableCaption>End of list.</TableCaption>
       <TableHeader>
@@ -58,7 +59,7 @@ const QuestionsList = ({ questions }) => {
 
                   {percentageCorrect && (
                     <TableCell className="text-right">
-                      {percentageCorrect}
+                      {percentageCorrect['$numberDecimal}']}
                     </TableCell>
                   )}
                 </TableRow>
@@ -68,6 +69,7 @@ const QuestionsList = ({ questions }) => {
         </>
       </TableBody>
     </Table>
+    </React.Fragment>
   );
 };
 

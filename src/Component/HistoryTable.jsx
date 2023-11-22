@@ -11,6 +11,12 @@ import {
   
   
   export function HistoryTable ({history}) {
+    if(history.length==0){
+      return (
+        <div className="w-full h-full flex justify-center items-center">Oops! You have not taken any exam yet</div>
+      )
+    }
+
     return (
       <Table>
         <TableHeader>
@@ -26,10 +32,10 @@ import {
           {history.map((exam) => (
             <TableRow key={exam.id} className="my-3">
               <TableCell className="font-medium">{exam.topic}</TableCell>
-              <TableCell>{exam.type}</TableCell>
-              <TableCell className="text-right">{exam.marksEarned}</TableCell>
-              <TableCell className="text-right">{exam.totalMarks}</TableCell>
-              <TableCell className="text-right"><Link to={`/stats/${exam.id}`} className={buttonVariants({variant:'outline'})}>Open</Link></TableCell>
+              <TableCell>{exam.examType}</TableCell>
+              <TableCell className="text-right">{exam.earnedMarks['$numberDecimal']}</TableCell>
+              <TableCell className="text-right">{exam.totalMarks['$numberDecimal']}</TableCell>
+              <TableCell className="text-right"><Link to={`/stats/${exam._id}`} className={buttonVariants({variant:'outline'})}>Open</Link></TableCell>
             </TableRow>
           ))}
         </TableBody>

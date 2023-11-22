@@ -6,3 +6,7 @@ export const signin = (data) =>{
 export const signup = (data) =>{
     return api.post("/user/signup",data);
 }
+
+export const getUserInfo = () =>{
+    return api.get("/user/getUserInfo");
+}

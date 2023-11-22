@@ -6,7 +6,6 @@ import DashBoard from "./Pages/DashBoard";
 import TalkToExperts from "./Pages/TalkToExperts";
 import Exams from "./Pages/Exams";
 import Statistics from "./Pages/Stats";
-import History from "./Pages/History";
 import ExpertChat from "./Pages/ExpertChat";
 import MCQExam from "./Pages/MCQExam";
 import OpenEndedExam from "./Pages/OpenEndedExam";
@@ -31,7 +30,6 @@ function App() {
           <Route path="/talk-to-expert" element={<TalkToExperts />} />
           <Route path="/exam" element={<Exams />} />
           <Route path="/stats/:examId" element={<Statistics />} />
-          <Route path="/history" element={<History />} />
           <Route path="/expertChat/:fileId" element={<ExpertChat />} />
           <Route path="/exam/mcq/:examId" element={<MCQExam />} />
           <Route path="/exam/openEnd/:examId" element={<OpenEndedExam />} />

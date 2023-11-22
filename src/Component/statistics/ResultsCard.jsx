@@ -5,7 +5,7 @@ import { Award, Trophy } from "lucide-react";
 
 const ResultsCard = ({ accuracy }) => {
   return (
-    <Card className="md:col-span-7">
+    <Card className="md:col-span-5">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7">
         <CardTitle className="text-2xl font-bold">Results</CardTitle>
         <Award />
