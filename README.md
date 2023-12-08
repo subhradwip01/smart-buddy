@@ -1,5 +1,5 @@
 # Smart Buddy
-###Introduction
+### Introduction
 In the fast-evolving landscape of education, the integration of technology has become paramount to
 addressing the diverse needs of modern learners. Recognizing the challenges students face in navigating
 complex academic curricula and the overwhelming number of educational resources, the "Smart Study
