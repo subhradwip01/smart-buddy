@@ -28,7 +28,7 @@ support to the unique preferences and requirements of each user.
 - Open AI
 
 ### API Link
-[Click Here](https://github.com/Nick12Thomas/Backend)
+[Click Here](https://github.com/Nick12Thomas/Backend/tree/chat-pdf)
 
 ### Sample Output:
   1. #### Login / Signup page
